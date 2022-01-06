@@ -1,0 +1,45 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ws-test
+  labels:
+    app.kubernetes.io/name: ws-test
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: ws-test
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: ws-test
+    spec:
+      containers:
+        - name: ws-test
+          image: ghcr.io/zdehasek/ws-test:latest
+          ports:
+            - containerPort: 30000
+              name: ws-test
+          command: ["/bin/sh"]
+          args: ["-c", "rm -f tmp/pids/server.pid && bundle exec rails s -p 30000 -b '0.0.0.0'" ]
+          env:
+            - name: REDIS_URL
+              value: redis://localhost:6379/0
+            - name: ACTION_CABLE_SERVER
+              value: ws://localhost:8181/cable
+        - name: redis
+          image: redis:3.2-alpine
+          imagePullPolicy: Always
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ws-test
+spec:
+  type: NodePort
+  ports:
+    - port: 8181
+      nodePort: 30000
+  selector:
+    app: websockets-test
