@@ -75,4 +75,5 @@ Rails.application.configure do
   # config.action_cable.disable_request_forgery_protection = true
 
   config.action_cable.url = ENV['ACTION_CABLE_SERVER']
+  config.hosts << EVN['ALLOWED_HOST']
 end
