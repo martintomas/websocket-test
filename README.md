@@ -7,10 +7,11 @@ You need to have installed following tools at your local machine:
  - bundler -- used to install all Ruby libraries
  - redis -- used to store websocket messages
 
-First of all open `.env` file and setup properly two variables there:
+First of all open `.env` file and setup properly variables there:
 ```bash
 REDIS_URL=redis://localhost:6379/0
 ACTION_CABLE_SERVER=ws://localhost:3000/cable
+ALLOWED_HOST=example.com
 ```
 afterwards you can install and run rest of the stuff
 ```bash
@@ -21,7 +22,7 @@ redis-server
 ```
 
 ## How to test websocket
-When you visit root page of Rails app (http://localhost:3000 by default). You should see: `Websocket message is:`. 
+When you visit root page of Rails app (http://localhost:3000 by default). You should see: `Websocket message is:`.
 Rest of the message is updated by server via broadcasted message transferred over websocket connection. You can manually trigger this broadcasting by typing:
 ```bash
 rails c # opens rails console
